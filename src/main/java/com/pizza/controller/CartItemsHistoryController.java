@@ -2,7 +2,6 @@ package com.pizza.controller;
 
 import com.pizza.model.CartItemsHistory;
 import com.pizza.service.CartItemsHistoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +10,14 @@ import java.util.List;
 @RequestMapping("/carthistory")
 public class CartItemsHistoryController {
 
-    @Autowired
     private CartItemsHistoryService cartItemsHistoryService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    public CartItemsHistoryController(CartItemsHistoryService cartItemsHistoryService) {
+		super();
+		this.cartItemsHistoryService = cartItemsHistoryService;
+	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/snapshot")
     public void createSnapshot(@RequestParam Long cartId,
                                @RequestParam Long foodId,

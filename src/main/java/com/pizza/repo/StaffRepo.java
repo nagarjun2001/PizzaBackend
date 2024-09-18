@@ -5,7 +5,6 @@ import com.pizza.model.Staff;
 import java.util.List;
 
 public interface StaffRepo {
-
 	public Staff getStaffById(Long id);
 	public Staff getStaffByUsername(String username);
 	public Staff getStaffByEmail(String email);

@@ -1,8 +1,8 @@
 package com.pizza.controller;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pizza.model.Customer;
-import com.pizza.serviceimpl.CustomerSerImpl;
+import com.pizza.service.CustomerService;
 
 @RestController
 @RequestMapping("/customer")
@@ -25,11 +25,12 @@ public class CustomerController {
 
 	String s = "Success";
 	String f = "Failure";
-	
-	CustomerSerImpl service;
+	String notfound = "Customer not found";
+			
+	CustomerService service;
 	JavaMailSender mail;
 
-	public CustomerController(CustomerSerImpl service, JavaMailSender mail) {
+	public CustomerController(CustomerService service, JavaMailSender mail) {
 		super();
 		this.service = service;
 		this.mail = mail;
@@ -45,9 +46,7 @@ public class CustomerController {
 	        if (existingCustomer != null) {
 	            return "Email already exists.";
 	        }
-	        
-	        if(existingCustomer == null) {
-				String otp = generateOtp();
+	        	String otp = generateOtp();
 				sendOtp(cust.getEmail(), otp, cust.getFname());
 				
 				cust.setOtp(otp);
@@ -55,11 +54,9 @@ public class CustomerController {
 				cust.setPassword(null);
 				
 				service.saveCustomer(cust);
-				msg = s;
-	        }
+				msg = s;	        
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			msg = f;
 		}
 		return msg;
@@ -75,44 +72,14 @@ public class CustomerController {
 		return service.getAllCustomer();
 	}
 	
-//	@PostMapping("/verifyotp")
-//	public String verifyOTP(@RequestParam(value = "email") String email, @RequestParam(value = "otp") String otp) {
-//		System.out.println("Received email: " + email);
-//	    System.out.println("Received OTP: " + otp);
-//	    Customer customer = service.findByEmail(email);
-//
-//	    if (customer.getOtp() == null || !customer.getOtp().equals(otp) || customer.getOtpexpiry().isBefore(LocalDateTime.now())) {
-//	        return "Invalid or expired OTP!";
-//	    }
-//
-//	    customer.setOtp(null);
-//	    customer.setOtpexpiry(null);
-//	    service.updateCustomer(customer);
-//
-//	    return "OTP Verified";
-//	}
-//	
-//	@PostMapping("/updatepwd")
-//    public String updatePassword(@RequestParam String email, @RequestParam String pwd) {
-//        Customer customer = service.findByEmail(email);
-//        if (customer == null) {
-//            return "Customer not found!";
-//        }
-//
-//        String encpwd = encoder.encode(pwd);
-//        customer.setPassword(encpwd);
-//        service.updateCustomer(customer);
-//
-//        return "Password updated successfully!";
-//    }
-	
+
 	@PostMapping("/verifyotp")
     public String verifyOtp(@RequestBody Customer verify) {
 
         Customer customer = service.findByEmail(verify.getEmail());
 
         if (customer == null) {
-            return "Customer not found!";
+            return notfound;
         }
 
         if (customer.getOtp() == null || !customer.getOtp().equals(verify.getOtp()) || customer.getOtpexpiry().isBefore(LocalDateTime.now())) {
@@ -126,11 +93,12 @@ public class CustomerController {
         return "OTP Verified";
     }
     
+	
     @PostMapping("/updatepwd")
     public String updatePassword(@RequestBody Customer upd) {
         Customer customer = service.findByEmail(upd.getEmail());
         if (customer == null) {
-            return "Customer not found!";
+            return notfound;
         }
 
         String encpwd = encoder.encode(upd.getPassword());
@@ -139,39 +107,26 @@ public class CustomerController {
 
         return "Password updated successfully!";
     }
-    
-//	@PostMapping("/login")
-//	public String loginCust(@RequestBody Customer cust) {
-//			Customer custold = service.findByEmail(cust.getEmail());
-//			if(custold == null) {
-//				return "Customer not found!";
-//			}
-//			
-//			boolean isMatching = encoder.matches(cust.getPassword(), custold.getPassword());
-//			return isMatching ? s: f;
-//		}
 
     @PostMapping("/login")
     public String loginCust(@RequestBody Customer cust) {
         try {
             Customer custold = service.findByEmail(cust.getEmail());
             if (custold == null) {
-                return "Customer not found!";
+                return notfound;
             }
             
             boolean isMatching = encoder.matches(cust.getPassword(), custold.getPassword());
             if (isMatching) {
-                return "Success:" + custold.getId();
+                return s + custold.getId();
             } else {
-                return "Failure";
+                return f;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Failure";
+            return f;
         }
     }
 	
-	//Cheezza
 	private void sendOtp(String email, String otp, String fname) {
 		SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -189,8 +144,9 @@ public class CustomerController {
 	}
 
 	private String generateOtp() {
-		Random random = new Random();
-		int otp = 100000 + random.nextInt(900000);
-		return String.valueOf(otp);
+	    SecureRandom secureRandom = new SecureRandom();
+	    int otp = 100000 + secureRandom.nextInt(900000);
+	    return String.valueOf(otp);
 	}
+
 }

@@ -1,7 +1,7 @@
 package com.pizza.controller;
 
 import com.pizza.model.Staff;
-import com.pizza.serviceimpl.StaffSerImpl;
+import com.pizza.service.StaffService;
 
 import java.util.List;
 
@@ -24,10 +24,9 @@ public class StaffController {
 
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
-    StaffSerImpl service;
+    StaffService service;
 
-    
-    public StaffController(StaffSerImpl service) {
+	public StaffController(StaffService service) {
 		super();
 		this.service = service;
 	}
@@ -92,7 +91,6 @@ public class StaffController {
 
             return "Success";
         } catch (Exception e) {
-            e.printStackTrace();
             return "Failure";
         }
     }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.pizza.model.Orders;
 
 public interface OrdersService {
-
 	public void addOrder(Orders ord);
 	public Orders getOrderByCustomerId(Long custid);
 	public List<Orders> getAllOrder();

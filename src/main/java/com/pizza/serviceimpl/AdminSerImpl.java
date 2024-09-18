@@ -47,11 +47,6 @@ public class AdminSerImpl implements AdminService {
         adminRepo.addStaff(staff);
     }
 
-//    @Override
-//    public void updateStaffPassword(Long id, String newPassword) {
-//        adminRepo.updateStaffPassword(id, newPassword);
-//    }
-
     @Override
     public Staff getStaffById(Long id) {
         return adminRepo.getStaffById(id);

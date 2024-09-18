@@ -1,7 +1,6 @@
 package com.pizza.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,22 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pizza.model.Cart;
 import com.pizza.model.CartItems;
-import com.pizza.model.CartItemsHistory;
-import com.pizza.repoimpl.CartItemsHistoryRepoImpl;
-import com.pizza.serviceimpl.CartItemsHistorySerImpl;
-import com.pizza.serviceimpl.SimpleCartSerImpl;
+import com.pizza.repo.CartItemsHistoryRepo;
+import com.pizza.service.CartItemsHistoryService;
+import com.pizza.service.SimpleCartService;
 
 @RestController
 @RequestMapping("/simcart")
 @CrossOrigin("http://localhost:3000")
 public class SimCartController {
 
-	SimpleCartSerImpl service;
-	CartItemsHistorySerImpl historyservice;
-	CartItemsHistoryRepoImpl repo;
+	SimpleCartService service;
+	CartItemsHistoryService historyservice;
+	CartItemsHistoryRepo repo;
 
-	public SimCartController(SimpleCartSerImpl service, CartItemsHistorySerImpl historyservice,
-			CartItemsHistoryRepoImpl repo) {
+	public SimCartController(SimpleCartService service, CartItemsHistoryService historyservice,
+			CartItemsHistoryRepo repo) {
 		super();
 		this.service = service;
 		this.historyservice = historyservice;
@@ -54,7 +52,6 @@ public class SimCartController {
 	        }
 		}
     	catch (Exception e) {
-    		e.printStackTrace();
     		msg = f;
     	}
         return msg;	    
@@ -106,7 +103,6 @@ public class SimCartController {
             }
         } catch (Exception e) {
             msg = f;
-            e.printStackTrace();
         }
         return msg;
     }
@@ -116,55 +112,5 @@ public class SimCartController {
     public Cart getCartByCustId(@PathVariable Long custid) {
     		return service.getCartByCustId(custid);
     }
-    
-//    @PutMapping("/markaspaid/{cartId}")
-//    public String markItemsAsPaid(@PathVariable Long cartId) {
-//        try {
-//            historyservice.markItemsAsPaid(cartId);
-//            return "Success";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Failure";
-//        }
-//    }
-
-//    @GetMapping("/history/customer/{customerId}")
-//    public List<CartItemsHistory> getHistoryByCustomerId(@PathVariable Long customerId) {
-//        return historyservice.getHistoryByCustomerId(customerId);
-//    }
-    
-//    @PostMapping("/copy/{sourceCartId}")
-//    public String copyCartItems(@PathVariable Long sourceCartId) {
-//        try {
-//            Cart sourceCart = service.getCartById(sourceCartId);
-//            if (sourceCart == null) {
-//                return "Source cart not found";
-//            }
-//
-//            // Create a new CartItemsHistory entity to hold the copied items
-//            CartItemsHistory newCartHistory = new CartItemsHistory();
-//            newCartHistory.setTotal(sourceCart.getTotal()); // If total is relevant in history
-//
-//            // List to hold the copied CartItemsHistory entries
-//            List<CartItemsHistory> copiedItems = new ArrayList<>();
-//
-//            for (CartItems item : sourceCart.getCartiem()) {
-//                CartItemsHistory newItemHistory = new CartItemsHistory();
-//                newItemHistory.setFoodId(item.getFood()); // Assuming CartItemsHistory has a Food property
-//                newItemHistory.setQty(item.getQty());   // Assuming CartItemsHistory has a Qty property
-//                // You may need to set other properties relevant to CartItemsHistory
-//                copiedItems.add(newItemHistory);
-//            }
-//
-//            // Save each CartItemsHistory item
-//            historyservice.saveCartItemsHistory(copiedItems);
-//
-//            return "Cart items copied successfully";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Failed to copy cart items";
-//        }
-//    }
-
-
+	
 }

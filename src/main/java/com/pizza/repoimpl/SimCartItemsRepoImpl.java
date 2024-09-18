@@ -9,7 +9,6 @@ import com.pizza.repo.SimCartItemsRepo;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -40,7 +39,7 @@ public class SimCartItemsRepoImpl implements SimCartItemsRepo{
 
 	@Override
 	public void delete(Long id) {
-		CartItems delobj = (CartItems) findById(id);
+		CartItems delobj = findById(id);
 		emanager.remove(delobj);
 	}
 
@@ -84,6 +83,4 @@ public class SimCartItemsRepoImpl implements SimCartItemsRepo{
         return q.getResultList();
 	}
 	
-	
-
 }

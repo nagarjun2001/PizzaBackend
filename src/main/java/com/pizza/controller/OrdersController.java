@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pizza.model.CartItemsHistory;
 import com.pizza.model.Orders;
-import com.pizza.serviceimpl.OrdersSerImpl;
+import com.pizza.service.OrdersService;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -26,13 +26,13 @@ public class OrdersController {
 	String s = "Success";
 	String f = "Failure";
 	
-	OrdersSerImpl service;
-
-	public OrdersController(OrdersSerImpl service) {
+	OrdersService service;
+	
+	public OrdersController(OrdersService service) {
 		super();
 		this.service = service;
 	}
-	
+
 	@PostMapping
 	@CrossOrigin("http://localhost:3000")
 	public String addOrders(@RequestBody Orders ord) {

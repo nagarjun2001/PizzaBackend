@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pizza.model.CartItems;
-import com.pizza.serviceimpl.SimCartItemsSerImpl;
+import com.pizza.service.SimCartItemsService;
 
 @RestController
 @RequestMapping("/simcartitems")
 @CrossOrigin("http://localhost:3000")
 public class SimCartItemsController {
 
-	SimCartItemsSerImpl service;
-	
-	public SimCartItemsController(SimCartItemsSerImpl service) {
+	SimCartItemsService service;
+
+	public SimCartItemsController(SimCartItemsService service) {
 		super();
 		this.service = service;
 	}
@@ -39,7 +39,6 @@ public class SimCartItemsController {
     		msg = s;
     	}
     	catch (Exception e) {
-    		e.printStackTrace();
     		msg = f;
     	}
         return msg;
@@ -116,7 +115,6 @@ public class SimCartItemsController {
 	        }
 	        return "Success";
 	    } catch (Exception e) {
-	        e.printStackTrace();
 	        return "Failure";
 	    }
 	}

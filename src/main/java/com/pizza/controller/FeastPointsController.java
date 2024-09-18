@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pizza.model.FeastPoints;
-import com.pizza.serviceimpl.FeastPointsSerImpl;
+import com.pizza.service.FeastPointsService;
 
 @RestController
 @RequestMapping("/points")
@@ -22,13 +22,13 @@ public class FeastPointsController {
 	String s = "Success";
 	String f = "Failure";
 	
-	FeastPointsSerImpl service;
-
-	public FeastPointsController(FeastPointsSerImpl service) {
+	FeastPointsService service;
+	
+	public FeastPointsController(FeastPointsService service) {
 		super();
 		this.service = service;
 	}
-	
+
 	@PostMapping
 	public String addFeastPoints(@RequestBody FeastPoints fp) {
 		String msg = "";

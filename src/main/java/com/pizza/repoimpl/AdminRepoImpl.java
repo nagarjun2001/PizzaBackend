@@ -52,15 +52,6 @@ public class AdminRepoImpl implements AdminRepo {
         emanager.persist(staff);
     }
 
-//    @Override
-//    public void updateStaffPassword(Long id, String newPassword) {
-//        Staff staff = getStaffById(id);
-//        if (staff != null) {
-//            staff.setPassword(newPassword);
-//            emanager.merge(staff);
-//        }
-//    }
-
     @Override
     public Staff getStaffById(Long id) {
         return emanager.find(Staff.class, id);

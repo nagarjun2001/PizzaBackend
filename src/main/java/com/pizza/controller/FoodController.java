@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pizza.model.Food;
-import com.pizza.serviceimpl.FoodSerImpl;
+import com.pizza.service.FoodService;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -24,13 +24,13 @@ public class FoodController {
 	String s = "Success";
 	String f = "Failure";
 	
-	FoodSerImpl service;
-
-	public FoodController(FoodSerImpl service) {
+	FoodService service;
+	
+	public FoodController(FoodService service) {
 		super();
 		this.service = service;
 	}
-	
+
 	@PostMapping
 	public String addFood(@RequestParam("fname") String fname,
 			@RequestParam("fdesc") String fdesc,
@@ -40,14 +40,14 @@ public class FoodController {
 			) {
 		String msg = "";
 		try {
-			Food f = new Food();
-			f.setFdesc(fdesc);
-			f.setFimg(fimg.getBytes());
-			f.setFname(fname);
-			f.setFprice(fprice);
-			f.setFtype(ftype);
+			Food fo = new Food();
+			fo.setFdesc(fdesc);
+			fo.setFimg(fimg.getBytes());
+			fo.setFname(fname);
+			fo.setFprice(fprice);
+			fo.setFtype(ftype);
 			
-			service.addFood(f);
+			service.addFood(fo);
 			msg = s;
 		}
 		catch (Exception e) {
@@ -101,7 +101,6 @@ public class FoodController {
             service.updateFood(food);
             msg = s;
         } catch (Exception e) {
-        	e.printStackTrace();
             msg = f;
         }
         return msg;

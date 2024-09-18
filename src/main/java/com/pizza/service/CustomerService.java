@@ -5,7 +5,6 @@ import java.util.List;
 import com.pizza.model.Customer;
 
 public interface CustomerService {
-
 	public void saveCustomer(Customer cust);
 	public Customer getCustById(Long id);
 	public List<Customer> getAllCustomer();

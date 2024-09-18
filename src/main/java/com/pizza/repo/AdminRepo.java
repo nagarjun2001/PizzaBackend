@@ -13,7 +13,6 @@ public interface AdminRepo {
     public List<Admin> getAllAdmins();
     
     public void addStaff(Staff staff);
-//    public void updateStaffPassword(Long id, String newPassword);
     public Staff getStaffById(Long id);
     public void deleteStaffById(Long id);
 }

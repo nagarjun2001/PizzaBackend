@@ -33,7 +33,7 @@ public class Customer {
 	private Long mobno;
 	private String address;
 	
-	public String otp;
+	private String otp;
 	private LocalDateTime otpexpiry;
 	
 	@OneToMany(mappedBy = "customer")

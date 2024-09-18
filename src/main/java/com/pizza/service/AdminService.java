@@ -13,7 +13,6 @@ public interface AdminService {
     List<Admin> getAllAdmins();
 
     void addStaff(Staff staff);
-//    void updateStaffPassword(Long id, String newPassword);
     Staff getStaffById(Long id);
     void sendCredentialsMail(String to, String staffName, String orgemail, String role, String plainPassword);
 }

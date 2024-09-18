@@ -5,7 +5,6 @@ import java.util.List;
 import com.pizza.model.CartItems;
 
 public interface SimCartItemsService {
-
 	public void save(CartItems cartItems);
 	public void update(CartItems cartItems);
 	public CartItems findById(Long id);

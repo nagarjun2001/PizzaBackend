@@ -1,7 +1,6 @@
 package com.pizza.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pizza.model.Inventory;
-import com.pizza.serviceimpl.InventorySerImpl;
+import com.pizza.service.InventoryService;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/stock")
 public class InventoryController {
 	
-	InventorySerImpl service;
-
-	public InventoryController(InventorySerImpl service) {
+	InventoryService service;
+	
+	public InventoryController(InventoryService service) {
 		super();
 		this.service = service;
 	}
-	
+
 	String s = "Success";
 	String f = "Failure";
 	
@@ -85,17 +84,13 @@ public class InventoryController {
                     i.setItemimg(itemimg.getBytes());
                 }
 
-                if (i.getItemqty() <= i.getLowlevel() && "true".equalsIgnoreCase(i.getIsRefillSelected())) {
-                    i.setItemqty(i.getRefillLevel());
-                }
-
 	            service.updateStock(i);
-	            msg = "Success";
+	            msg = s;
 	        } else {
 	            msg = "Failure: Item not found";
 	        }
 	    } catch (Exception e) {
-	        msg = "Failure";
+	        msg = f;
 	    }
 	    return msg;
 	}
@@ -135,12 +130,11 @@ public class InventoryController {
 
 	            inventory.setItemqty(newQuantity);
 	            service.updateStock(inventory);
-	            return ResponseEntity.ok("Success");
+	            return ResponseEntity.ok(s);
 	        } else {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failure: Item not found");
 	        }
 	    } catch (Exception e) {
-	        e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failure: An error occurred");
 	    }
 	}
@@ -184,9 +178,11 @@ public class InventoryController {
 	public static class TakeOutRequest {
         private Long takeOutQuantity;
 
-        public TakeOutRequest() {}
+        public TakeOutRequest() {
+			super();
+		}
 
-        public Long getTakeOutQuantity() {
+		public Long getTakeOutQuantity() {
             return takeOutQuantity;
         }
 
